@@ -1,15 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { Text, ScrollView, View, Button } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { Text, ScrollView, View, Button, Image, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LABELS } from '@/constants/labels';
 import { useAudioPlayer } from 'expo-audio';
 import { IconButton } from 'react-native-paper';
+import ViewShot from "react-native-view-shot";
 
 export default function HomeScreen() {
-
   const [wordOfTheDay, setWordOfTheDay] = useState<any>({});
   const [audioData, setAudioData] = useState<any>({});
   const apiKey: string = process.env?.WORDNIK_API_KEY || '';
+
+  const viewShotRef = useRef<ViewShot>(null);
+  const [snapshotUri, setSnapshotUri] = React.useState<string | null>(null);
+
 
   // Only create audio player when we have audio data
   const wordAudio = useAudioPlayer(audioData && audioData?.fileUrl || '', {
@@ -82,13 +86,41 @@ export default function HomeScreen() {
     const scrollY = event.nativeEvent.contentOffset.y;
   }
 
+  const handleAddToWordCollection = async () => {
+    if (Platform.OS === "web") {
+      return;
+    }
+
+    try {
+      const uri = await viewShotRef.current?.capture?.();
+      console.log(uri)
+      setSnapshotUri(uri || null);
+    } catch (err) {
+      console.warn("Failed to capture view:", err);
+    }
+  }
+
   return (
     <SafeAreaView className="flex-1 bg-white" edges={['top']}>
       <View className="flex-1 bg-white">
         <View className="pl-6 pt-6 pr-6 mb-2">
+          {snapshotUri && (
+            <Image
+            source={{ uri: snapshotUri }}
+            style={{ width: 200, height: 200, marginTop: 20, borderWidth: 1 }}
+            />
+          )}
           <Text className="text-3xl font-semibold text-gray-900 mb-2">{LABELS.WORD_OF_THE_DAY}</Text>
           <View>
-            <Text className="text-4xl text-grey-900 font-medium">{getWord()}</Text>
+            <ViewShot ref={viewShotRef}>
+              <Text className="text-4xl text-grey-900 font-medium">
+              {
+                getWord() ? 
+                  getWord() :
+                  LABELS.NO_WORD_TODAY
+              }
+            </Text>
+            </ViewShot>
             {
               audioData?.fileUrl ? 
               <IconButton 
@@ -143,19 +175,11 @@ export default function HomeScreen() {
               :
               <Text className="text-gray-500 italic">{LABELS.NO_EXAMPLES}</Text>
             }
-          </View>
-          <View className="mb-6">
-            <Text className="text-xl font-semibold text-gray-800 mb-3">Synonyms</Text>
-            <Text className="text-gray-500 italic">Coming soon...</Text>
-          </View>
-          <View className="mb-6">
-            <Text className="text-xl font-semibold text-gray-800 mb-3">Antonyms</Text>
-            <Text className="text-gray-500 italic">Coming soon...</Text>
-          </View>          
+          </View>      
         </ScrollView>
         <View className='p-6'>
           <View>
-            <Button title='Add to My Words'></Button>
+            <Button title={LABELS.ADD_TO_WORDS} onPress={handleAddToWordCollection}></Button>
           </View>
         </View>
       </View>
