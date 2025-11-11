@@ -11,3 +11,8 @@ export const LABELS = {
     NO_EXAMPLES: 'No example sentences found',
     ADD_TO_WORDS: 'Add to My Words',
 } as const;
+
+export const TRAINING_LABELS = {
+    WORD_MATCHING_BUTTON: "Word Matching",
+    DEFINITION_MATCHING_BUTTON: "Definition Mathcing",
+} as const;

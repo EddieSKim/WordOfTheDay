@@ -52,14 +52,11 @@ export default function HomeScreen() {
       .catch(error => console.error('Error fetching word:', error));
   }, []);
 
-  console.log(audioData)
-
   const getWord = (): string => {
     if (!wordOfTheDay.word) {
       return '';
     }
     return wordOfTheDay?.word.toUpperCase();
-    //return wordOfTheDay?.word.charAt(0).toUpperCase() + wordOfTheDay?.word.slice(1);
   }
 
   const getWordNote = (): string => {
