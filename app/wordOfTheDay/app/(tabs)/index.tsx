@@ -5,10 +5,13 @@ import { LABELS } from '@/constants/labels';
 import { useAudioPlayer } from 'expo-audio';
 import { IconButton } from 'react-native-paper';
 import ViewShot from "react-native-view-shot";
+import AppHeader from '@/components/appHeader';
+import AppCard from '@/components/appCard';
 
 export default function HomeScreen() {
   const [wordOfTheDay, setWordOfTheDay] = useState<any>({});
   const [audioData, setAudioData] = useState<any>({});
+  const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const apiKey: string = process.env?.WORDNIK_API_KEY || '';
 
   const viewShotRef = useRef<ViewShot>(null);
@@ -79,6 +82,10 @@ export default function HomeScreen() {
     return wordOfTheDay.antonyms || [];
   }
 
+  const getCurrentDate = (): Date => {
+    return currentDate;
+  }
+
   const handleOnScroll = (event: any) => {
     const scrollY = event.nativeEvent.contentOffset.y;
   }
@@ -98,16 +105,22 @@ export default function HomeScreen() {
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-white" edges={['top']}>
-      <View className="flex-1 bg-white">
-        <View className="pl-6 pt-6 pr-6 mb-2">
+    <SafeAreaView className="flex-1" edges={['top']}>
+      <AppHeader
+        title={LABELS.APP_TITLE}
+        description={LABELS.APP_DESCRIPTION}/>
+      <View className="flex-1 p-6">
+        <AppCard>
+          <View className="flex-col items-start pl-6 pt-6 pr-6 mb-2">
           {snapshotUri && (
             <Image
             source={{ uri: snapshotUri }}
             style={{ width: 200, height: 200, marginTop: 20, borderWidth: 1 }}
             />
           )}
-          <Text className="text-3xl font-semibold text-gray-900 mb-2">{LABELS.WORD_OF_THE_DAY}</Text>
+          <Text>
+            {currentDate.toLocaleDateString()}
+          </Text>
           <View>
             <ViewShot ref={viewShotRef}>
               <Text className="text-4xl text-grey-900 font-medium">
@@ -130,7 +143,6 @@ export default function HomeScreen() {
             }
           </View>
         </View>
-        {/* <View className="h-1 bg-black w-screen"></View> */}
         <ScrollView 
           className="flex-1 pb-6 pr-6 pl-6"
           onScroll={handleOnScroll}
@@ -174,11 +186,12 @@ export default function HomeScreen() {
             }
           </View>      
         </ScrollView>
-        <View className='p-6'>
-          <View>
-            <Button title={LABELS.ADD_TO_WORDS} onPress={handleAddToWordCollection}></Button>
+          <View className='p-6'>
+            <View>
+              <Button title={LABELS.ADD_TO_WORDS} onPress={handleAddToWordCollection}></Button>
+            </View>
           </View>
-        </View>
+        </AppCard>
       </View>
     </SafeAreaView>
   );
