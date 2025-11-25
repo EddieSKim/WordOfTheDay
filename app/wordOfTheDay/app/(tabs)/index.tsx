@@ -17,6 +17,10 @@ export default function HomeScreen() {
   const viewShotRef = useRef<ViewShot>(null);
   const [snapshotUri, setSnapshotUri] = React.useState<string | null>(null);
 
+  const dateOption = {
+
+  };
+
 
   // Only create audio player when we have audio data
   const wordAudio = useAudioPlayer(audioData && audioData?.fileUrl || '', {
@@ -82,8 +86,12 @@ export default function HomeScreen() {
     return wordOfTheDay.antonyms || [];
   }
 
-  const getCurrentDate = (): Date => {
-    return currentDate;
+  const getCurrentDate = (): string => {
+    return currentDate.toLocaleDateString('en-us', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
   }
 
   const handleOnScroll = (event: any) => {
@@ -119,7 +127,7 @@ export default function HomeScreen() {
             />
           )}
           <Text>
-            {currentDate.toLocaleDateString()}
+            {getCurrentDate()}
           </Text>
           <View>
             <ViewShot ref={viewShotRef}>
