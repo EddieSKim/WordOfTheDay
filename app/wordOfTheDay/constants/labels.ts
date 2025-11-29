@@ -1,6 +1,6 @@
 export const LABELS = {
     APP_TITLE: 'Word Master',
-    APP_DESCRIPTION: 'Become a Master One Word at a Time', 
+    APP_DESCRIPTION: 'Expand your vocabulary, one word at a time', 
     NO_WORD_TODAY: 'No Word Today',
     DEFINITIONS: 'Definitions',
     DEFINITION: 'Definition',
@@ -15,6 +15,7 @@ export const LABELS = {
 
 export const TRAINING_LABELS = {
     WORD_GYM_TITLE: "Word Gym",
-    WORD_MATCHING_BUTTON: "Word Matching",
-    DEFINITION_MATCHING_BUTTON: "Definition Mathcing",
+    WORD_MATCHING_TITLE: "Word Matching",
+    DEFINITION_MATCHING_TITLE: "Definition Matching",
+    START_GAME_BUTTON: "Start Game",
 } as const;
