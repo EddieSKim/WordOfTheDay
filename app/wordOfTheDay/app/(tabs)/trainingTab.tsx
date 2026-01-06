@@ -2,6 +2,7 @@ import { View, Pressable, Text } from "react-native";
 import { Button } from "react-native-paper";
 import AppHeader from "@/components/appHeader";
 import AppCard from "@/components/appCard";
+import TrainingGameCard from "@/components/trainingGameCard";
 
 import { LABELS, TRAINING_LABELS } from "@/constants/labels";
 
@@ -20,17 +21,12 @@ export default function TrainingTab() {
                         </View>
                     </View>
                     <View className="mb-4">
-                        <AppCard>
-                            <View className="m-6">
-                                <Text>{TRAINING_LABELS.WORD_MATCHING_TITLE}</Text>
-                                <Button
-                                    icon="puzzle"
-                                    mode="outlined"
-                                    onPress={()=>console.log("Word matching")}>
-                                    {TRAINING_LABELS.START_GAME_BUTTON}
-                                </Button>
-                            </View>
-                        </AppCard>
+                        <TrainingGameCard
+                            title={TRAINING_LABELS.DEFINITION_MATCHING_TITLE}
+                            description="" 
+                            icon=""
+                            onPress={()=>{}}
+                        />
                     </View>
                     <View className="mb-4">
                         <AppCard>

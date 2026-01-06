@@ -12,7 +12,7 @@ export default function HomeScreen() {
   const [wordOfTheDay, setWordOfTheDay] = useState<any>({});
   const [audioData, setAudioData] = useState<any>({});
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
-  const apiKey: string = process.env?.WORDNIK_API_KEY || '';
+  const apiKey: string = process.env.EXPO_WORDNIK_API_KEY || '';
 
   const viewShotRef = useRef<ViewShot>(null);
   const [snapshotUri, setSnapshotUri] = React.useState<string | null>(null);
