@@ -3,10 +3,11 @@ import { Text, ScrollView, View, Button, Image, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LABELS } from '@/constants/labels';
 import { useAudioPlayer } from 'expo-audio';
-import { IconButton } from 'react-native-paper';
+import { Chip, Divider, IconButton } from 'react-native-paper';
 import ViewShot from "react-native-view-shot";
 import AppHeader from '@/components/appHeader';
 import AppCard from '@/components/appCard';
+import WordExampleCard from '@/components/wordExampleCard';
 
 export default function HomeScreen() {
   const [wordOfTheDay, setWordOfTheDay] = useState<any>({});
@@ -166,15 +167,19 @@ export default function HomeScreen() {
             {
               getDefinitions().length > 0 ? 
               getDefinitions().map((definition: any, index: number) => (
-                <Text key={index} className="text-gray-700 mb-2 leading-6">
-                  {index+1}. {definition.text}
-                </Text>
+                <View>
+                  <Chip>{definition.partOfSpeech}</Chip>
+                  <Text key={index} className="text-gray-700 mb-2 leading-6">
+                    {definition.text}
+                  </Text>
+                </View> 
               ))
               :
               <Text className="text-gray-500 italic">{LABELS.NO_DEFINITIONS}</Text>
             }
           </View>
-          <View className="mb-6">
+          <Divider />
+          <View className="my-4">
             <Text className="text-xl font-semibold text-gray-800 mb-3">
             {
                 getExampleSentences().length > 1 ? 
@@ -185,14 +190,15 @@ export default function HomeScreen() {
             {
               getExampleSentences().length > 0 ? 
               getExampleSentences().map((exampleSentence: any, index: number) => (
-                <Text key={index} className="text-gray-700 mb-2 leading-6">
-                  {index+1}. {exampleSentence.text}
-                </Text>
+                <View className='p-2'>
+                  <WordExampleCard key={index} example={exampleSentence.text} />
+                </View>
               ))
               :
               <Text className="text-gray-500 italic">{LABELS.NO_EXAMPLES}</Text>
             }
-          </View>      
+          </View>
+          <Divider />  
         </ScrollView>
           <View className='p-6'>
             <View>
