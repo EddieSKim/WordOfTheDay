@@ -95,10 +95,6 @@ export default function HomeScreen() {
     });
   }
 
-  const handleOnScroll = (event: any) => {
-    const scrollY = event.nativeEvent.contentOffset.y;
-  }
-
   const handleAddToWordCollection = async () => {
     if (Platform.OS === "web") {
       return;
@@ -114,7 +110,7 @@ export default function HomeScreen() {
   }
 
   return (
-    <SafeAreaView className="flex-1" edges={['top']}>
+    <ScrollView className="flex-1">
       <AppHeader
         title={LABELS.APP_TITLE}
         description={LABELS.APP_DESCRIPTION}/>
@@ -152,10 +148,8 @@ export default function HomeScreen() {
             }
           </View>
         </View>
-        <ScrollView 
-          className="flex-1 pb-6 pr-6 pl-6"
-          onScroll={handleOnScroll}
-          showsVerticalScrollIndicator={false}>
+        <View 
+          className="flex-1 pb-6 pr-6 pl-6">
           <View className="mb-6">
             <Text className="text-xl font-semibold text-gray-800 mb-3">
               {
@@ -167,9 +161,9 @@ export default function HomeScreen() {
             {
               getDefinitions().length > 0 ? 
               getDefinitions().map((definition: any, index: number) => (
-                <View>
+                <View className="flex-wrap flex-row">
                   <Chip>{definition.partOfSpeech}</Chip>
-                  <Text key={index} className="text-gray-700 mb-2 leading-6">
+                  <Text key={index} className="text-gray-700 mb-2 leading-6 my-2">
                     {definition.text}
                   </Text>
                 </View> 
@@ -199,7 +193,7 @@ export default function HomeScreen() {
             }
           </View>
           <Divider />  
-        </ScrollView>
+        </View>
           <View className='p-6'>
             <View>
               <Button title={LABELS.ADD_TO_WORDS} onPress={handleAddToWordCollection}></Button>
@@ -207,7 +201,7 @@ export default function HomeScreen() {
           </View>
         </AppCard>
       </View>
-    </SafeAreaView>
+    </ScrollView>
   );
 }
 

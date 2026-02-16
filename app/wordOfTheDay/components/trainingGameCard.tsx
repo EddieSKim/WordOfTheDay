@@ -34,7 +34,7 @@ export default function TrainingGameCard({
                         <Text className="my-1">
                             Skills Focused: 
                         </Text>
-                        <View className="mt-1 mb-2">
+                        <View className="mt-1 mb-2 flex-row">
                             <Chip mode="outlined">
                                 Understanding
                             </Chip>
