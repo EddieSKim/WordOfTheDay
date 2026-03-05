@@ -14,7 +14,7 @@ export default function AppHeader(
 ) {
 
     return (
-        <View className="items-center justify-center pt-6 pr-6 pl-6 pb-2">
+        <View className="items-center justify-center pt-6 pr-6 pl-6 pb-2 mt-8">
             <Text className="text-3xl font-semibold text-violet-600 mb-2">
                 {title}
             </Text>

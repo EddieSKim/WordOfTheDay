@@ -11,7 +11,7 @@ export default function TrainingTab() {
     return(
         <ScrollView className="flex-1">
             <AppHeader title={LABELS.APP_TITLE} description={LABELS.APP_DESCRIPTION}/>
-            <View className="p-6">
+            <View className="p-6 mb-10">
                 <View className="flex-col justify-center w-full h-full">
                     <View className="bg-violet-500 rounded-2xl shadow-md mb-4">
                         <View className="flex-col justify-start p-6">

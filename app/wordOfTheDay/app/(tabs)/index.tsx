@@ -9,6 +9,8 @@ import AppHeader from '@/components/appHeader';
 import AppCard from '@/components/appCard';
 import WordExampleCard from '@/components/wordExampleCard';
 
+import { testDatabase } from '@/database';
+
 export default function HomeScreen() {
   const [wordOfTheDay, setWordOfTheDay] = useState<any>({});
   const [audioData, setAudioData] = useState<any>({});
@@ -115,6 +117,7 @@ export default function HomeScreen() {
         title={LABELS.APP_TITLE}
         description={LABELS.APP_DESCRIPTION}/>
       <View className="flex-1 p-6">
+        <Button title="Test Database" onPress={() => testDatabase()} />
         <AppCard>
           <View className="flex-col items-start pl-6 pt-6 pr-6 mb-2">
           {snapshotUri && (
@@ -142,7 +145,6 @@ export default function HomeScreen() {
                 size={20}
                 icon="volume-high"
                 onPress={() => wordAudio.play()}>
-
               </IconButton> :
               <></>
             }
