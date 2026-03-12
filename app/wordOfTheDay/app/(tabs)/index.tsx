@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Text, ScrollView, View, Button, Image, Platform } from 'react-native';
+import { useWordOfDay } from '@/hooks/useWordOfTheDay';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LABELS } from '@/constants/labels';
 import { useAudioPlayer } from 'expo-audio';
@@ -12,8 +13,7 @@ import WordExampleCard from '@/components/wordExampleCard';
 import { testDatabase } from '@/database';
 
 export default function HomeScreen() {
-  const [wordOfTheDay, setWordOfTheDay] = useState<any>({});
-  const [audioData, setAudioData] = useState<any>({});
+  const { word, wordAudioData, loading } = useWordOfDay();
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const apiKey: string = process.env.EXPO_WORDNIK_API_KEY || '';
 
@@ -24,69 +24,34 @@ export default function HomeScreen() {
 
   };
 
-
   // Only create audio player when we have audio data
-  const wordAudio = useAudioPlayer(audioData && audioData?.fileUrl || '', {
-    downloadFirst: true
-  });
-
-  // fetch word on load
-  useEffect(() => {
-    if (Object.keys(wordOfTheDay).length !== 0) {
-      return;
-    }
-
-    fetch(`https://api.wordnik.com/v4/words.json/wordOfTheDay?api_key=${apiKey}`)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        setWordOfTheDay(data);
-        // Fetch audio data after word data is set
-        return fetch(`https://api.wordnik.com/v4/word.json/${data.word}/audio?useCanonical=false&limit=1&api_key=${apiKey}`);
-      })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        if (!data?.error) {
-          setAudioData(data[0])
-        }
-      })
-      .catch(error => console.error('Error fetching word:', error));
-  }, []);
+  const wordAudio = useAudioPlayer(wordAudioData && wordAudioData?.fileUrl || '', { downloadFirst: true });
 
   const getWord = (): string => {
-    if (!wordOfTheDay.word) {
+    if (!word.word) {
       return '';
     }
-    return wordOfTheDay?.word.toUpperCase();
+    return word?.word.toUpperCase();
   }
 
   const getWordNote = (): string => {
-    return wordOfTheDay.note || '';
+    return word.note || '';
   }
 
   const getDefinitions = (): [] => {
-    return wordOfTheDay.definitions || [];
+    return word.definitions || [];
   }
 
   const getExampleSentences = (): [] => {
-    return wordOfTheDay.examples || [];
+    return word.examples || [];
   }
   
   const getSynonyms = (): [] => {
-    return wordOfTheDay.synonyms || [];
+    return word.synonyms || [];
   }
 
   const getAntonyms = (): [] => {
-    return wordOfTheDay.antonyms || [];
+    return word.antonyms || [];
   }
 
   const getCurrentDate = (): string => {
@@ -140,7 +105,7 @@ export default function HomeScreen() {
             </Text>
             </ViewShot>
             {
-              audioData?.fileUrl ? 
+              wordAudioData?.fileUrl ? 
               <IconButton 
                 size={20}
                 icon="volume-high"
