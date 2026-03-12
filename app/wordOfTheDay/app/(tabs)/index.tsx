@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Text, ScrollView, View, Button, Image, Platform } from 'react-native';
 import { useWordOfDay } from '@/hooks/useWordOfTheDay';
+import { useWord } from '@/hooks/useWord';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LABELS } from '@/constants/labels';
 import { useAudioPlayer } from 'expo-audio';
@@ -14,15 +15,12 @@ import { testDatabase } from '@/database';
 
 export default function HomeScreen() {
   const { word, wordAudioData, loading } = useWordOfDay();
+  const { wordsCollection, saveWordToCollection} = useWord();
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const apiKey: string = process.env.EXPO_WORDNIK_API_KEY || '';
 
   const viewShotRef = useRef<ViewShot>(null);
   const [snapshotUri, setSnapshotUri] = React.useState<string | null>(null);
-
-  const dateOption = {
-
-  };
 
   // Only create audio player when we have audio data
   const wordAudio = useAudioPlayer(wordAudioData && wordAudioData?.fileUrl || '', { downloadFirst: true });

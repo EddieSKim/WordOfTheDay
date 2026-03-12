@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { saveWord, getAllWords } from "@/database/wordQueries";
 
 export const useWord = () => {
-  const [words, setWords] = useState<any[]>([]);
+  const [wordsCollection, setWordsCollection] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
   const loadWords = async () => {
@@ -10,7 +10,7 @@ export const useWord = () => {
 
     try {
       const data: any = await getAllWords();
-      setWords(data);
+      setWordsCollection(data);
     } catch (error) {
       console.error("Error loading saved words: ", error);
     } finally {
@@ -33,5 +33,5 @@ export const useWord = () => {
     loadWords();
   }, []);
 
-  return { words, saveWordToCollection, loadWords };
+  return { wordsCollection, saveWordToCollection, loadWords, loading };
 };
