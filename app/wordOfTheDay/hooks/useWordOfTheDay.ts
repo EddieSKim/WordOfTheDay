@@ -1,32 +1,37 @@
 import { useState, useEffect } from "react";
 import { fetchWordOfTheDay, fetchWordAudio } from "../services/wordnikService";
+import type { WordNikWord } from "@/types/wordnikWord";
 
-export function useWordOfDay() {
-    const [word, setWord] = useState<any>({});
-    const [wordAudioData, setWordAudioData] = useState<any>({});
+export function useWordOfDay(): {
+    word: WordNikWord | null;
+    loading: boolean;
+} {
+    const [word, setWord] = useState<WordNikWord | null>(null);
     const [loading, setLoading] = useState(false);
 
     const loadWord = async () => {
-        setLoading(true);
+    setLoading(true);
 
-        try {
-            const result = await fetchWordOfTheDay();
-            const wordAudio = await fetchWordAudio(result?.word);
+    try {
+        const baseWord = await fetchWordOfTheDay();
+        const wordAudio = await fetchWordAudio(baseWord.word);
 
-            // await addWord(result.word, result.definition, result.example);
+        const wordWithAudio: WordNikWord = {
+            ...baseWord,
+            audio: wordAudio ?? undefined,
+        };
 
-            setWord(result);
-            setWordAudioData(wordAudio);
-        } catch (error) {
-            console.error(error);
-        }
+        setWord(wordWithAudio);
+    } catch (error) {
+        console.error(error);
+    }
 
-        setLoading(false);
+    setLoading(false);
     };
 
     useEffect(() => {
         loadWord();
     }, []);
 
-    return { word, wordAudioData, loading };
+    return { word, loading };
 }
