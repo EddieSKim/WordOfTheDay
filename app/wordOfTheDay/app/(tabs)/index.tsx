@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { Text, ScrollView, View, Button, Image, Platform } from 'react-native';
 import { useWordOfDay } from '@/hooks/useWordOfTheDay';
 import { useWord } from '@/hooks/useWord';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { LABELS } from '@/constants/labels';
 import { useAudioPlayer } from 'expo-audio';
 import { Chip, Divider, IconButton } from 'react-native-paper';
@@ -14,8 +13,8 @@ import WordExampleCard from '@/components/wordExampleCard';
 import { testDatabase } from '@/database';
 
 export default function HomeScreen() {
-  const { word, wordAudioData, loading } = useWordOfDay();
-  const { wordsCollection, saveWordToCollection} = useWord();
+  const { word, loading } = useWordOfDay();
+  const { wordsCollection, saveWordToCollection } = useWord();
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const apiKey: string = process.env.EXPO_WORDNIK_API_KEY || '';
 
@@ -23,35 +22,23 @@ export default function HomeScreen() {
   const [snapshotUri, setSnapshotUri] = React.useState<string | null>(null);
 
   // Only create audio player when we have audio data
-  const wordAudio = useAudioPlayer(wordAudioData && wordAudioData?.fileUrl || '', { downloadFirst: true });
+  const wordAudio = useAudioPlayer(word?.audio?.fileUrl || '', { downloadFirst: true });
 
   const getWord = (): string => {
-    if (!word.word) {
+    if (!word || !word.word) {
       return '';
     }
-    return word?.word.toUpperCase();
+    return word.word.toUpperCase();
   }
 
-  const getWordNote = (): string => {
-    return word.note || '';
+  const getDefinitions = () => {
+    return word?.definitions || [];
   }
 
-  const getDefinitions = (): [] => {
-    return word.definitions || [];
-  }
-
-  const getExampleSentences = (): [] => {
-    return word.examples || [];
+  const getExampleSentences = () => {
+    return word?.examples || [];
   }
   
-  const getSynonyms = (): [] => {
-    return word.synonyms || [];
-  }
-
-  const getAntonyms = (): [] => {
-    return word.antonyms || [];
-  }
-
   const getCurrentDate = (): string => {
     return currentDate.toLocaleDateString('en-us', {
       year: 'numeric',
@@ -66,12 +53,22 @@ export default function HomeScreen() {
     }
 
     try {
-      const uri = await viewShotRef.current?.capture?.();
-      console.log(uri)
-      setSnapshotUri(uri || null);
+      if (!word) {
+        return;
+      }
+
+      await saveWordToCollection({
+        word: word.word,
+        definition: word.definitions?.[0]?.text ?? '',
+        example: word.examples?.[0]?.text,
+      });
     } catch (err) {
-      console.warn("Failed to capture view:", err);
+      console.warn("Failed to add word to collections:", err);
     }
+  }
+
+  if (loading || !word) {
+    return <ScrollView className="flex-1" />;
   }
 
   return (
@@ -103,7 +100,7 @@ export default function HomeScreen() {
             </Text>
             </ViewShot>
             {
-              wordAudioData?.fileUrl ? 
+              word?.audio?.fileUrl ? 
               <IconButton 
                 size={20}
                 icon="volume-high"
