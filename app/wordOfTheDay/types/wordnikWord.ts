@@ -1,19 +1,19 @@
-export type WordnikDefinition = {
+export type WordNikDefinition = {
     text: string;
     partOfSpeech?: string;
 };
 
-export type WordnikExample = {
+export type WordNikExample = {
     text: string;
 };
 
-export type WordnikAudio = {
+export type WordNikAudio = {
     fileUrl: string;
 };
 
-export type WordnikWord = {
+export type WordNikWord = {
     word: string;
-    definitions: WordnikDefinition[];
-    examples: WordnikExample[];
-    audio?: WordnikAudio;
+    definitions: WordNikDefinition[];
+    examples: WordNikExample[];
+    audio?: WordNikAudio;
 };
