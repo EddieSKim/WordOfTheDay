@@ -36,6 +36,7 @@ export function testDatabase() {
 }
 
 export const initDb = () => {
+  // Initialize word table
   db?.execSync(`
     CREATE TABLE IF NOT EXISTS words (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -45,7 +46,7 @@ export const initDb = () => {
     );
   `);
 
-  // Word progress table
+  // Initialize word progress table
   db?.execSync(`
     CREATE TABLE IF NOT EXISTS word_progress (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -54,6 +55,18 @@ export const initDb = () => {
       last_reviewed DATE DEFAULT NULL,
       correct_count INTEGER DEFAULT 0,
       wrong_count INTEGER DEFAULT 0,
+      FOREIGN KEY(word_id) REFERENCES words(id)
+    );
+  `);
+
+  // Initialize training result table
+  db?.execSync(`
+    CREATE TABLE IF NOT EXISTS training_results (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      word_id INTEGER NOT NULL,
+      game_type TEXT NOT NULL,
+      correct BOOLEAN NOT NULL,
+      timestamp DATE NOT NULL,
       FOREIGN KEY(word_id) REFERENCES words(id)
     );
   `);
