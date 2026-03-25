@@ -156,11 +156,14 @@ export default function HomeScreen() {
           </View>
           <Divider />  
         </View>
-          <View className='p-6'>
-            <View>
-              <Button title={LABELS.ADD_TO_WORDS} onPress={handleAddToWordCollection}></Button>
+        {
+          getWord() !== '' &&
+            <View className='p-6'>
+              <View>
+                <Button title={LABELS.ADD_TO_WORDS} onPress={handleAddToWordCollection}></Button>
+              </View>
             </View>
-          </View>
+        }
         </AppCard>
       </View>
     </ScrollView>
