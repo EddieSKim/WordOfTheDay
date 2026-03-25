@@ -6,7 +6,6 @@ import { LABELS } from '@/constants/labels';
 import { useAudioPlayer } from 'expo-audio';
 import { Chip, Divider, IconButton } from 'react-native-paper';
 import ViewShot from "react-native-view-shot";
-import AppHeader from '@/components/appHeader';
 import AppCard from '@/components/appCard';
 import WordExampleCard from '@/components/wordExampleCard';
 
@@ -73,9 +72,6 @@ export default function HomeScreen() {
 
   return (
     <ScrollView className="flex-1">
-      <AppHeader
-        title={LABELS.APP_TITLE}
-        description={LABELS.APP_DESCRIPTION}/>
       <View className="flex-1 p-6">
         <Button title="Test Database" onPress={() => testDatabase()} />
         <AppCard>

@@ -8,6 +8,8 @@ import { initDb } from '@/database';
 
 
 import { useColorScheme } from '@/hooks/use-color-scheme';
+import AppHeader from '@/components/appHeader';
+import { LABELS } from '@/constants/labels';
 
 export const unstable_settings = {
   anchor: '(tabs)',
@@ -23,7 +25,15 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="(tabs)"
+          options={{
+            headerShown: true,
+            header: () => (
+              <AppHeader title={LABELS.APP_TITLE} description={LABELS.APP_DESCRIPTION} />
+            ),
+          }}
+        />
         <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
       </Stack>
       <StatusBar style="auto" />
