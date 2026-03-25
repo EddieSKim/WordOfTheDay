@@ -24,7 +24,7 @@ export default function TrainingGameCard({
             <AppCard>
                 <View className="m-6">
                     <View className="flex-col justify-start">
-                        <AppCardHeader header={title} className="font-semibold my-4" />
+                        <AppCardHeader header={title} />
                         <AppCardSubHeader subHeader={description} className="my-2" />
                         <Text className="my-4">
                             15-20 mins
