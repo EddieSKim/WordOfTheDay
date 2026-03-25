@@ -2,6 +2,8 @@ import { View, Text } from "react-native";
 import AppCard from "./appCard";
 import { Button, Chip } from "react-native-paper";
 import { TRAINING_LABELS } from "@/constants/labels";
+import AppCardHeader from "@/components/appCardHeader";
+import AppCardSubHeader from "@/components/appCardSubHeader";
 
 interface TrainingGameCardProps {
     title: string,
@@ -22,12 +24,8 @@ export default function TrainingGameCard({
             <AppCard>
                 <View className="m-6">
                     <View className="flex-col justify-start">
-                        <Text className="text-xl font-semibold my-4">
-                            {title}
-                        </Text>
-                        <Text className="my-2">
-                            {description}
-                        </Text>
+                        <AppCardHeader header={title} className="font-semibold my-4" />
+                        <AppCardSubHeader subHeader={description} className="my-2" />
                         <Text className="my-4">
                             15-20 mins
                         </Text>
