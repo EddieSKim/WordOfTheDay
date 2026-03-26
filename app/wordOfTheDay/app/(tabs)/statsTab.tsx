@@ -3,9 +3,11 @@ import { View, Text } from "react-native";
 import AppCard from "@/components/appCard";
 import AppCardHeader from "@/components/appCardHeader";
 import AppCardSubHeader from "@/components/appCardSubHeader";
+import { useWord } from "@/hooks/useWord";
 
 export default function StatsTab() {
-    const [wordCollection, setWordCollection] = useState([]);
+    const { wordsCollection } = useWord();
+    console.log(wordsCollection);
 
     const getWordCollection = () => {
 
@@ -35,6 +37,15 @@ export default function StatsTab() {
                     <View className="m-6">
                         <AppCardHeader header="Word Mastery" />
                         <AppCardSubHeader subHeader="Track your progress for each word" />
+                        {
+                            wordsCollection &&
+                            wordsCollection.map((item) => {
+
+                                return (
+                                    <Text>{item.word}</Text>
+                                );
+                            })
+                        }
                     </View>
                 </AppCard>
             </View>
