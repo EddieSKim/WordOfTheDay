@@ -1,25 +1,21 @@
 import { db } from "./index";
 
 // Save a new word
-export const saveWord = (
+export async function saveWord(
     word: string,
     definition: string,
     example?: string
-) => {
-    return new Promise<void>((resolve: any, reject: any) => {
-        db?.transaction((tx: any) => {
-        tx.executeSql(
-            `INSERT INTO words (word, definition, example) VALUES (?, ?, ?)`,
-            [word, definition, example],
-            (_: any, result: any) => resolve(result),
-            (_: any, error: any) => {
-                reject(error);
-                return false;
-            }
+): Promise<void> {
+    try {
+        await db.runAsync(
+            `INSERT OR IGNORE INTO words (word, definition, example) VALUES (?, ?, ?)`,
+            [word, definition, example]
         );
-    });
-});
-};
+    } catch (error) {
+        console.error("Error saving word:", error);
+        throw error;
+    }
+}
 
 export const deleteWord = (id: number) => {
     return new Promise<void>((resolve: any, reject: any) => {
@@ -56,18 +52,12 @@ export const updateWord = (id: number, word: string, definition: string, example
 
 
 // Get all saved words
-export const getAllWords = () => {
-    return new Promise((resolve, reject) => {
-    db?.transaction(tx => {
-        tx.executeSql(
-          `SELECT * FROM words`,
-        [],
-        (_, { rows }) => resolve(rows._array),
-        (_, error) => {
-            reject(error);
-            return false;
-        }
-        );
-    });
-    });
+export const getAllWords = async () => {
+    try {
+        const result = await db.getAllAsync(`SELECT * FROM words`);
+        return result;
+    } catch (error) {
+        console.error("Error fetching words:", error);
+        throw error;
+    }
 };
