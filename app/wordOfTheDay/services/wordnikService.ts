@@ -5,7 +5,7 @@ const BASE_URL = "https://api.wordnik.com/v4";
 
 export async function fetchWordOfTheDay(): Promise<WordNikWord> {
   const res = await fetch(
-    `${BASE_URL}/v4/words.json/wordOfTheDay?api_key=${API_KEY}`,
+    `${BASE_URL}/words.json/wordOfTheDay?api_key=${API_KEY}`,
   );
 
   if (!res.ok) {
@@ -44,14 +44,18 @@ export async function fetchWordOfTheDay(): Promise<WordNikWord> {
 export async function fetchWordAudio(
   word: string,
 ): Promise<WordNikAudio | null> {
-  const res = await fetch(
-    `${BASE_URL}/v4/word.json/${word}/audio?useCanonical=false&limit=1&api_key=${API_KEY}`,
-  );
+  try {
+    const res = await fetch(
+      `${BASE_URL}/word.json/${word}/audio?useCanonical=false&limit=1&api_key=${API_KEY}`,
+    );
 
-  if (!res.ok) {
-    throw new Error(`Error fetching word audio! status: ${res.status}`);
+    // Quietly treat any audio fetch failure as "no audio available"
+    if (!res.ok) return null;
+
+    const data = (await res.json()) as WordNikAudio[];
+    return data[0] ?? null;
+  } catch {
+    // Swallow network/JSON errors to keep the UI from spamming logs
+    return null;
   }
-
-  const data = (await res.json()) as WordNikAudio[];
-  return data[0] ?? null;
 }
