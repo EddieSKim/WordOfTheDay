@@ -10,29 +10,10 @@ if (Platform.OS !== 'web') {
 
 export { db };
 
-export function testDatabase() {
-  try {
-    // create table
-    db?.execSync(`
-      CREATE TABLE IF NOT EXISTS test (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT
-      );
-    `);
-
-    // insert row
-    db?.execSync(`
-      INSERT INTO test (name) VALUES ('hello database');
-    `);
-
-    // query rows
-    const rows = db?.getAllSync(`SELECT * FROM test;`);
-
-    console.log("DATABASE RESULT:", rows);
-
-  } catch (error) {
-    console.error("DB ERROR:", error);
-  }
+export const clearWordTable = () => {
+  db?.execSync(
+    `DELETE FROM words;`
+  );
 }
 
 export const initDb = () => {
@@ -40,7 +21,7 @@ export const initDb = () => {
   db?.execSync(`
     CREATE TABLE IF NOT EXISTS words (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      word TEXT NOT NULL,
+      word TEXT NOT NULL UNIQUE,
       definition TEXT,
       example TEXT
     );
