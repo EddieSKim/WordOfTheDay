@@ -9,13 +9,12 @@ import ViewShot from "react-native-view-shot";
 import AppCard from '@/components/appCard';
 import WordExampleCard from '@/components/wordExampleCard';
 
-import { testDatabase } from '@/database';
+import { clearWordTable } from '@/database';
 
 export default function HomeScreen() {
   const { word, loading } = useWordOfDay();
   const { wordsCollection, saveWordToCollection } = useWord();
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
-  const apiKey: string = process.env.EXPO_WORDNIK_API_KEY || '';
 
   const viewShotRef = useRef<ViewShot>(null);
   const [snapshotUri, setSnapshotUri] = React.useState<string | null>(null);
@@ -73,8 +72,8 @@ export default function HomeScreen() {
   return (
     <ScrollView className="flex-1">
       <View className="flex-1 p-6">
-        <Button title="Test Database" onPress={() => testDatabase()} />
         <AppCard>
+          <Button title="Clear Word Table" onPress={() => clearWordTable()}></Button>
           <View className="flex-col items-start pl-6 pt-6 pr-6 mb-2">
           {snapshotUri && (
             <Image
