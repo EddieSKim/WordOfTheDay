@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Text, ScrollView, View, Button, Image, Platform } from 'react-native';
 import { useWordOfDay } from '@/hooks/useWordOfTheDay';
-import { useWord } from '@/hooks/useWord';
+import { useWordContext } from '@/contexts/WordContext';
 import { LABELS } from '@/constants/labels';
 import { useAudioPlayer } from 'expo-audio';
 import { Chip, Divider, IconButton } from 'react-native-paper';
@@ -13,7 +13,7 @@ import { clearWordTable } from '@/database';
 
 export default function HomeScreen() {
   const { word, loading } = useWordOfDay();
-  const { wordsCollection, saveWordToCollection } = useWord();
+  const { wordsCollection, saveWordToCollection } = useWordContext();
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
 
   const viewShotRef = useRef<ViewShot>(null);

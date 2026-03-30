@@ -1,31 +1,25 @@
-import { useState } from "react";
-import { View, Text } from "react-native";
 import AppCard from "@/components/appCard";
 import AppCardHeader from "@/components/appCardHeader";
 import AppCardSubHeader from "@/components/appCardSubHeader";
-import { useWord } from "@/hooks/useWord";
+import { useWordContext } from "@/contexts/WordContext";
+import { Text, View } from "react-native";
 
 export default function StatsTab() {
-    const { wordsCollection } = useWord();
+    const { wordsCollection } = useWordContext();
     console.log(wordsCollection);
 
-    const getWordCollection = () => {
-
-        return [];
+    if (wordsCollection.length === 0) {
+        return (
+            <View className="p-6">
+                <AppCard>
+                    <View className="p-6 flex-col justify-center items-center">
+                        <AppCardHeader header="No analytics available yet!" />
+                        <AppCardSubHeader subHeader="Start learning words and playing games to see your progress." center />
+                    </View>
+                </AppCard>
+            </View>
+        );
     }
-
-    // if (wordCollection.length === 0) {
-    //     return (
-    //         <View className="p-6">
-    //             <AppCard>
-    //                 <View className="p-6 flex-col justify-center items-center">
-    //                     <AppCardHeader header="No analytics available yet!" />
-    //                     <AppCardSubHeader subHeader="Start learning words and playing games to see your progress." center />
-    //                 </View>
-    //             </AppCard>
-    //         </View>
-    //     );
-    // }
 
     return (
         <View className="p-6">
@@ -39,10 +33,10 @@ export default function StatsTab() {
                         <AppCardSubHeader subHeader="Track your progress for each word" />
                         {
                             wordsCollection &&
-                            wordsCollection.map((item) => {
+                            wordsCollection.map((item, index) => {
 
                                 return (
-                                    <Text>{item.word}</Text>
+                                    <Text key={index}>{item.word}</Text>
                                 );
                             })
                         }

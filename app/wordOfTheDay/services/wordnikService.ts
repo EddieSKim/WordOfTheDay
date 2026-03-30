@@ -1,4 +1,4 @@
-import type { WordNikWord, WordNikAudio, WordNikDefinition, WordNikExample } from "../types/wordnikWord";
+import type { WordNikAudio, WordNikDefinition, WordNikExample, WordNikWord } from "../types/wordnikWord";
 
 const API_KEY = process.env.EXPO_PUBLIC_WORDNIK_API_KEY || "";
 const BASE_URL = "https://api.wordnik.com/v4";
@@ -7,13 +7,14 @@ export async function fetchWordOfTheDay(): Promise<WordNikWord> {
   const res = await fetch(
     `${BASE_URL}/words.json/wordOfTheDay?api_key=${API_KEY}`,
   );
+  console.log(API_KEY)
 
   if (!res.ok) {
     throw new Error(
       `Error fetching word of the day! status: ${res.status}`,
     );
   }
-
+  console.log(res)
   const raw = await res.json() as any;
 
   const definitions: WordNikDefinition[] =
