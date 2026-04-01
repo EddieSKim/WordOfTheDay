@@ -4,12 +4,12 @@ import { db } from "./index";
 export async function saveWord(
     word: string,
     definition: string,
-    example?: string
+    example?: string,
 ): Promise<void> {
     try {
         await db.runAsync(
             `INSERT OR IGNORE INTO words (word, definition, example) VALUES (?, ?, ?)`,
-            [word, definition, example]
+            [word, definition, example],
         );
     } catch (error) {
         console.error("Error saving word:", error);
@@ -20,36 +20,39 @@ export async function saveWord(
 export const deleteWord = (id: number) => {
     return new Promise<void>((resolve: any, reject: any) => {
         db?.transaction((tx: any) => {
-        tx.executeSql(
-            `DELETE FROM words WHERE id = ?`,
-            [id],
-            (_: any, result: any) => resolve(void 0),
-            (_: any, error: any) => {
-            reject(error);
-            return false;
-        }
-        );
-    });
+            tx.executeSql(
+                `DELETE FROM words WHERE id = ?`,
+                [id],
+                (_: any, result: any) => resolve(void 0),
+                (_: any, error: any) => {
+                    reject(error);
+                    return false;
+                },
+            );
+        });
     });
 };
 
-export const updateWord = (id: number, word: string, definition: string, example?: string) => {
+export const updateWord = (
+    id: number,
+    word: string,
+    definition: string,
+    example?: string,
+) => {
     return new Promise((resolve, reject) => {
-    db?.transaction(tx => {
-        tx.executeSql(
-        `UPDATE words SET word = ?, definition = ?, example = ? WHERE id = ?`,
-        [word, definition, example, id],
-        (_: any, result: any) => resolve(result),
-        (_: any, error: any) => {
-            reject(error);
-            return false;
-        }
-        );
-    });
+        db?.transaction((tx) => {
+            tx.executeSql(
+                `UPDATE words SET word = ?, definition = ?, example = ? WHERE id = ?`,
+                [word, definition, example, id],
+                (_: any, result: any) => resolve(result),
+                (_: any, error: any) => {
+                    reject(error);
+                    return false;
+                },
+            );
+        });
     });
 };
-
-
 
 // Get all saved words
 export const getAllWords = async () => {
