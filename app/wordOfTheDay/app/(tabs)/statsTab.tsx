@@ -3,13 +3,12 @@ import AppCardHeader from "@/components/appCardHeader";
 import AppCardSubHeader from "@/components/appCardSubHeader";
 import DistributionProgressContainer from "@/components/distributionProgressContainer";
 import { useWordContext } from "@/contexts/WordContext";
-import { Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 
 export default function StatsTab() {
-    const { wordsCollection } = useWordContext();
-    console.log(wordsCollection);
+    const { wordsWithProgress, wordProgressStats } = useWordContext();
 
-    if (wordsCollection.length === 0) {
+    if (wordsWithProgress.length === 0) {
         return (
             <View className="p-6">
                 <AppCard>
@@ -26,17 +25,36 @@ export default function StatsTab() {
     }
 
     return (
-        <View className="p-6">
+        <ScrollView className="p-6">
             <View className="p-6"></View>
             <View className="mb-4">
                 <AppCard>
                     <View className="m-6">
                         <AppCardHeader header="Word Mastery" />
                         <AppCardSubHeader subHeader="Track your progress for each word" />
-                        {wordsCollection &&
-                            wordsCollection.map((item, index) => {
-                                return <Text key={index}>{item.word}</Text>;
-                            })}
+                        <View className="mt-4">
+                            {wordsWithProgress.map((item, index) => (
+                                <View
+                                    key={index}
+                                    className="flex-row justify-between items-center py-2 border-b border-gray-200"
+                                >
+                                    <View className="flex-1">
+                                        <Text className="font-semibold">
+                                            {item.word}
+                                        </Text>
+                                    </View>
+                                    <View className="flex-col items-end">
+                                        <Text className="text-sm font-medium">
+                                            {item.familiarity}%
+                                        </Text>
+                                        <Text className="text-xs text-gray-500">
+                                            {item.correct_count}✓ /{" "}
+                                            {item.wrong_count}✗
+                                        </Text>
+                                    </View>
+                                </View>
+                            ))}
+                        </View>
                     </View>
                 </AppCard>
             </View>
@@ -46,10 +64,12 @@ export default function StatsTab() {
                     <View className="m-6">
                         <AppCardHeader header="Distribution" />
                         <AppCardSubHeader subHeader="Vocabulary knowledge breakdown" />
-                        <DistributionProgressContainer />
+                        <DistributionProgressContainer
+                            wordProgressStats={wordProgressStats}
+                        />
                     </View>
                 </AppCard>
             </View>
-        </View>
+        </ScrollView>
     );
 }
