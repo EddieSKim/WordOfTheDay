@@ -1,6 +1,7 @@
 import AppCard from "@/components/appCard";
 import AppCardHeader from "@/components/appCardHeader";
 import AppCardSubHeader from "@/components/appCardSubHeader";
+import DistributionProgressContainer from "@/components/distributionProgressContainer";
 import { useWordContext } from "@/contexts/WordContext";
 import { Text, View } from "react-native";
 
@@ -14,7 +15,10 @@ export default function StatsTab() {
                 <AppCard>
                     <View className="p-6 flex-col justify-center items-center">
                         <AppCardHeader header="No analytics available yet!" />
-                        <AppCardSubHeader subHeader="Start learning words and playing games to see your progress." center />
+                        <AppCardSubHeader
+                            subHeader="Start learning words and playing games to see your progress."
+                            center
+                        />
                     </View>
                 </AppCard>
             </View>
@@ -23,32 +27,26 @@ export default function StatsTab() {
 
     return (
         <View className="p-6">
-            <View className="p-6">
-
-            </View>
+            <View className="p-6"></View>
             <View className="mb-4">
                 <AppCard>
                     <View className="m-6">
                         <AppCardHeader header="Word Mastery" />
                         <AppCardSubHeader subHeader="Track your progress for each word" />
-                        {
-                            wordsCollection &&
+                        {wordsCollection &&
                             wordsCollection.map((item, index) => {
-
-                                return (
-                                    <Text key={index}>{item.word}</Text>
-                                );
-                            })
-                        }
+                                return <Text key={index}>{item.word}</Text>;
+                            })}
                     </View>
                 </AppCard>
             </View>
-            
+
             <View>
                 <AppCard>
                     <View className="m-6">
                         <AppCardHeader header="Distribution" />
                         <AppCardSubHeader subHeader="Vocabulary knowledge breakdown" />
+                        <DistributionProgressContainer />
                     </View>
                 </AppCard>
             </View>

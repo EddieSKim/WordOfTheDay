@@ -7,9 +7,16 @@ type AppCardSubHeaderProps = {
     className?: string;
 };
 
-export default function AppCardSubHeader({ subHeader, center, italic, className }: AppCardSubHeaderProps) {
+export default function AppCardSubHeader({
+    subHeader,
+    center,
+    italic,
+    className,
+}: AppCardSubHeaderProps) {
     return (
-        <Text className={`text-gray-500 text-lg ${center ? "text-center" : ""} ${italic ? "italic" : ""} ${className ?? ""}`}>
+        <Text
+            className={`text-gray-500 text-lg ${center ? "text-center" : ""} ${italic ? "italic" : ""} ${className ?? ""}`}
+        >
             {subHeader}
         </Text>
     );
