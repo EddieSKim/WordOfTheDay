@@ -9,7 +9,7 @@ export async function saveWord(
     try {
         await db.runAsync(
             `INSERT OR IGNORE INTO words (word, definition, example) VALUES (?, ?, ?)`,
-            [word, definition, example],
+            [word.trim(), definition, example],
         );
     } catch (error) {
         console.error("Error saving word:", error);
@@ -17,47 +17,37 @@ export async function saveWord(
     }
 }
 
-export const deleteWord = (id: number) => {
-    return new Promise<void>((resolve: any, reject: any) => {
-        db?.transaction((tx: any) => {
-            tx.executeSql(
-                `DELETE FROM words WHERE id = ?`,
-                [id],
-                (_: any, result: any) => resolve(void 0),
-                (_: any, error: any) => {
-                    reject(error);
-                    return false;
-                },
-            );
-        });
-    });
+export const deleteWord = async (id: number) => {
+    try {
+        await db.runAsync(`DELETE FROM words WHERE id = ?`, [id]);
+    } catch (error) {
+        console.error("Error deleting word:", error);
+        throw error;
+    }
 };
 
-export const updateWord = (
+export const updateWord = async (
     id: number,
     word: string,
     definition: string,
     example?: string,
 ) => {
-    return new Promise((resolve, reject) => {
-        db?.transaction((tx) => {
-            tx.executeSql(
-                `UPDATE words SET word = ?, definition = ?, example = ? WHERE id = ?`,
-                [word, definition, example, id],
-                (_: any, result: any) => resolve(result),
-                (_: any, error: any) => {
-                    reject(error);
-                    return false;
-                },
-            );
-        });
-    });
+    try {
+        await db.runAsync(
+            `UPDATE words SET word = ?, definition = ?, example = ? WHERE id = ?`,
+            [word, definition, example, id],
+        );
+    } catch (error) {
+        console.error("Error updating word:", error);
+        throw error;
+    }
 };
 
 // Get all saved words
 export const getAllWords = async () => {
     try {
         const result = await db.getAllAsync(`SELECT * FROM words`);
+        console.log(JSON.stringify(result));
         return result;
     } catch (error) {
         console.error("Error fetching words:", error);
