@@ -32,7 +32,7 @@ export const initDb = () => {
     db?.execSync(`
     CREATE TABLE IF NOT EXISTS word_progress (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        word_id INTEGER NOT NULL,
+        word_id INTEGER NOT NULL UNIQUE,
         familiarity INTEGER DEFAULT 0,
         last_reviewed DATE DEFAULT NULL,
         correct_count INTEGER DEFAULT 0,

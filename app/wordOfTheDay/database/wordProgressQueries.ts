@@ -2,9 +2,10 @@ import { db } from "./index";
 
 export const createWordProgress = async (word_id: number) => {
     try {
-        await db.runAsync(`INSERT INTO word_progress (word_id) VALUES (?)`, [
-            word_id,
-        ]);
+        await db.runAsync(
+            `INSERT OR IGNORE INTO word_progress (word_id) VALUES (?)`,
+            [word_id],
+        );
     } catch (error) {
         console.error("Error creating word progress:", error);
         throw error;
