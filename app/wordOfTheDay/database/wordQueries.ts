@@ -1,4 +1,5 @@
 import { db } from "./index";
+import { createWordProgress } from "./wordProgressQueries";
 
 // Save a new word
 export async function saveWord(
@@ -11,6 +12,17 @@ export async function saveWord(
             `INSERT OR IGNORE INTO words (word, definition, example) VALUES (?, ?, ?)`,
             [word.trim(), definition, example],
         );
+
+        // Get the word_id
+        const wordResult = await db.getAllAsync(
+            `SELECT id FROM words WHERE word = ?`,
+            [word.trim()],
+        );
+
+        if (wordResult.length > 0) {
+            const word_id = wordResult[0].id;
+            await createWordProgress(word_id);
+        }
     } catch (error) {
         console.error("Error saving word:", error);
         throw error;
